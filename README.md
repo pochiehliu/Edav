@@ -1,2 +1,2 @@
 # edav
-fall2018
+Fall 2018 assignments
