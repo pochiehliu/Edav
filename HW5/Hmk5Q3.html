@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Hmk5 Q3</title>
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+
+	</head>
+	<body>
+	
+	  <h3>Click anywhere to add a point.</h3>
+
+	  
+		<script type="text/javascript">
+
+			//Width and height of svg
+			var w = 600;
+			var h = 400;
+			var padding = 30;
+			
+			// axis min / max
+			var xmin = -50;
+			var xmax = 50;
+			var ymin = -30;
+			var ymax = 30;
+		  
+			//		Scale functions
+			var xScale = d3.scaleLinear()
+				.domain([xmin, xmax])
+				.range([0+padding, w-padding]);
+
+			var yScale = d3.scaleLinear()
+				.domain([ymin, ymax])
+				.range([h-padding, 0+padding]);
+
+			//    Define X axis and Y axis
+			var xAxis = d3.axisBottom(xScale).ticks(5);
+			var yAxis = d3.axisLeft(yScale).ticks(5);
+
+			//    Create SVG element		
+			var svg = d3.select("body").append("svg").attr("width",w).attr("height",h);
+			
+			//    Create axes
+			svg.append("g")
+				.attr("transform", "translate(" + 0 + "," + h/2 + ")").call(xAxis);
+			
+			svg.append("g")
+				.attr("transform", "translate(" + w/2 + "," + 0 + ")" ).call(yAxis);
+					
+			//    Create blank text element
+			var text_el1 = d3.select("body").append("p").append("text");
+			var text_el2 = d3.select("body").append("p").append("text");
+
+			//    Click behavior
+			var circle_data = [];
+			var x_circle = [];
+			var y_circle = [];
+
+			svg.on("click", function() {
+				var loc = d3.mouse(this);
+				circle_data.push({x: loc[0], y: loc[1]});
+				x_circle.push(xScale.invert(loc[0]));
+				y_circle.push(yScale.invert(loc[1]));
+
+
+				text_el1					
+					.text("X coordinate mean: " + 
+					d3.mean(x_circle).toFixed(2));
+				text_el2
+					.text("Y coordinate mean: " + 
+					d3.mean(y_circle).toFixed(2));
+
+				var circles = svg.selectAll("circle")
+					.data(circle_data)
+					.enter()
+					.append("circle")
+					.attr("cx", function(d) {return d.x;})
+					.attr("cy", function(d) {return d.y;})
+					.attr("r","3")
+					.attr("fill","red");
+				
+			});
+
+
+		</script>
+	</body>
+</html>

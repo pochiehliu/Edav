@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Hmk5 Q4</title>
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+
+	</head>
+	<body>
+
+    <div style="width: 600px">
+	
+	  <h3>Correlation Coefficient</h3>
+	  
+	  <p>The correlation coefficient (r) is a measure of the linear relationship
+	  between two variables x and y. To get a sense of the connection between the
+	  appearance of points -- (x,y) pairs --  in a scatterplot and the value of r,
+	  click anywhere on the graph to add points. The correlation coefficient is shown below.</p>
+	  
+	  </div>
+		
+		<h3 id="cc">Two points are needed to calculate r.</h3>
+	  
+		<script type="text/javascript">
+
+			//Width and height of svg
+			var w = 600;
+			var h = 400;
+			var padding = 30;
+			
+			// axis min / max
+			
+			var xmin = -50;
+			var xmax = 50;
+			var ymin = -30;
+			var ymax = 30;
+		
+			//		Scale functions
+			var xScale = d3.scaleLinear()
+				.domain([xmin, xmax])
+				.range([0+padding, w-padding]);
+			
+			var yScale = d3.scaleLinear()
+				.domain([ymin, ymax])
+				.range([h-padding, 0+padding]);
+
+			//    Define X axis and Y axis
+			var xAxis = d3.axisBottom(xScale).ticks(5);
+			var yAxis = d3.axisLeft(yScale).ticks(5);
+
+			//    Create blank text element
+			var text_el = d3.select("body").select("#cc");
+
+			//    Create SVG element
+			var svg = d3.select("body").append("svg").attr("width",w).attr("height",h);		
+			    				
+			//    Create axes
+			svg.append("g")
+				.attr("transform", "translate(" + 0 + "," + h/2 + ")").call(xAxis);
+			
+			svg.append("g")
+				.attr("transform", "translate(" + w/2 + "," + 0 + ")" ).call(yAxis);
+			
+			//    Click behavior
+			var circle_data = [];
+			var x_circle = [];
+			var y_circle = [];
+
+			svg.on("click", function() {
+				var loc = d3.mouse(this);
+				circle_data.push({x: loc[0], y: loc[1]});
+				x_circle.push(xScale.invert(loc[0]));
+				y_circle.push(yScale.invert(loc[1]));
+
+				if (x_circle.length >= 2) {
+					text_el.text("r = " + rscore(x_circle, y_circle).toFixed(2));
+				}
+
+				var circles = svg.selectAll("circle")
+					.data(circle_data)
+					.enter()
+					.append("circle")
+					.attr("cx", function(d) {return d.x;})
+					.attr("cy", function(d) {return d.y;})
+					.attr("r","3")
+					.attr("fill","red");
+				
+			});
+
+			function rscore(x, y) {
+				var xbar = d3.mean(x);
+				var ybar = d3.mean(y);
+
+				var top = d3.sum(
+					x.map(function(d,i) {return (d-xbar)*(y[i]-ybar)})
+					);
+				var bottom1 = d3.sum(
+					x.map(function(d,i) {return Math.pow((d-xbar),2)})
+					);
+				var bottom2 = d3.sum(
+					y.map(function(d,i) {return Math.pow((d-ybar),2)})
+					);
+
+				var r = top/Math.pow(bottom1,0.5)/Math.pow(bottom2,0.5);
+
+				return r
+
+			}
+	
+
+		</script>
+	</body>
+</html>
