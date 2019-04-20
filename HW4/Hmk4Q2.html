@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  	<title> EDAV HW4-2</title>
+
+  	<script src="https://d3js.org/d3.v4.min.js"></script>
+
+  	<style type="text/css">
+  		/* bar class */
+  		.bar{
+  			fill:skyblue;
+  			stroke:darkblue;
+  			stroke-width:2;
+  		}
+  		/* bar class2 */
+  		.bar2{
+  			fill:lightgreen;
+  			stroke:darkblue;
+  			stroke-width:2;
+  		}
+  		/* horizontal line class */
+  		.horiline{
+  			stroke:white;
+  			stroke-width:1;
+  		}
+  		/* chnage interavtive color */
+  		.bar2:hover {
+  			fill:orange;
+  		}
+  	</style>
+
+  </head>
+  <body>
+
+  	<svg width="500" height="400">  <!-- some SVG -->
+
+			<rect x="0" y="0" width="500" height="400" fill="white"></rect>
+			<rect x="50" y="50" width="400" height="300" fill="lightgray"></rect>
+			
+			<line class = "horiline" x1="50" y1="110" x2="450" y2="110"></line>
+			<line class = "horiline" x1="50" y1="170" x2="450" y2="170"></line>
+			<line class = "horiline" x1="50" y1="230" x2="450" y2="230"></line>
+			<line class = "horiline" x1="50" y1="290" x2="450" y2="290"></line>
+
+			<rect id = "id1" class = "bar" x="60" y="290" width="76" height="60"></rect>
+			<rect class = "bar" x="136" y="290" width="76" height="60"></rect>
+			<rect class = "bar" x="212" y="200" width="76" height="150"></rect>
+			<rect id = "id2" class = "bar" x="288" y="80" width="76" height="270"></rect>
+			<rect class = "bar" x="364" y="290" width="76" height="60"></rect>
+
+			<text x="200" y="25" font-size="25">Histogram</text>
+			<text x="20" y="250" transform="rotate(270,20,250)" font-size="20">Frequency</text>
+
+			<text x="35" y="115">8</text>
+			<text x="35" y="175">6</text>
+			<text x="35" y="235">4</text>
+			<text x="35" y="295">2</text>
+			<text x="35" y="355">0</text>
+			
+			<text x="55" y="370">7</text>
+			<text x="131" y="370">8</text>
+			<text x="207" y="370">9</text>
+			<text x="283" y="370">10</text>
+			<text x="359" y="370">11</text>
+			<text x="435" y="370">12</text>
+		
+		</svg>
+
+
+		<script>
+			/* change text color */
+			d3.select("body").select("svg").selectAll("text").attr("fill","blue") 
+			/* change bars color */
+			d3.select("body").select("svg").selectAll("rect.bar").attr("class","bar2")
+			/* chage bar height*/
+			d3.select("body").select("svg").selectAll("#id1").transition().duration(2000).attr("height", "270").attr("y", "80")
+			d3.select("body").select("svg").selectAll("#id2").transition().duration(2000).attr("height", "60").attr("y", "290")
+
+		</script>
+
+
+  </body>
+</html>
